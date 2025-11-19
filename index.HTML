@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XB脚本中心</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        .title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            bottom: 5px;
+            width: 5px;
+            background: linear-gradient(to bottom, #3498db, #9b59b6);
+            border-radius: 3px;
+        }
+        
+        .device-info {
+            font-size: 14px;
+            color: #7f8c8d;
+            background: rgba(236, 240, 241, 0.7);
+            padding: 6px 12px;
+            border-radius: 15px;
+            border: 1px solid rgba(189, 195, 199, 0.3);
+        }
+        
+        .welcome-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transform: scale(0.8);
+            animation: scaleIn 0.5s 0.3s forwards;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .modal-content h2 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 24px;
+        }
+        
+        .modal-content p {
+            margin-bottom: 20px;
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+        
+        .close-btn {
+            background: linear-gradient(to right, #3498db, #9b59b6);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        .close-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.6);
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 20px;
+            color: white;
+        }
+        
+        .natural-disaster .card-icon {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+        
+        .aim-assist .card-icon {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+        
+        .wallhack .card-icon {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .sub-feature {
+            background: rgba(236, 240, 241, 0.7);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(189, 195, 199, 0.3);
+        }
+        
+        .sub-feature:hover {
+            background: rgba(236, 240, 241, 0.9);
+            transform: translateX(5px);
+        }
+        
+        .sub-feature-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        
+        .sub-feature-desc {
+            font-size: 14px;
+            color: #7f8c8d;
+            line-height: 1.5;
+        }
+        
+        .copy-btn {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            display: inline-block;
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+        }
+        
+        .copy-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(46, 204, 113, 0.6);
+        }
+        
+        .disabled {
+            background: #bdc3c7;
+            color: #7f8c8d;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        .disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #2ecc71;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            z-index: 100;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+        
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0.8); }
+            to { transform: scale(1); }
+        }
+        
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .title::before {
+                display: none;
+            }
+            
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-modal" id="welcomeModal">
+        <div class="modal-content">
+            <h2>欢迎进入XB脚本中心!</h2>
+            <p>在这里您可以找到各种实用的游戏脚本，请谨慎使用并遵守游戏规则。</p>
+            <button class="close-btn" id="closeModal">开始使用</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <header>
+            <h1 class="title">XB脚本中心</h1>
+            <div class="device-info" id="deviceInfo">设备信息</div>
+        </header>
+        
+        <div class="main-content">
+            <div class="card natural-disaster">
+                <div class="card-header">
+                    <div class="card-icon">🌪️</div>
+                    <h2 class="card-title">自然灾害脚本</h2>
+                </div>
+                <div class="sub-feature">
+                    <h3 class="sub-feature-title">复制自然灾害脚本</h3>
+                    <p class="sub-feature-desc">点击复制自然灾害脚本代码到剪贴板</p>
+                    <button class="copy-btn" data-script="natural-disaster">复制脚本</button>
+                </div>
+                <div class="sub-feature">
+                    <h3 class="sub-feature-title">QQ群: 199346111</h3>
+                    <p class="sub-feature-desc">加入我们的QQ群获取更多脚本和帮助</p>
+                    <button class="copy-btn disabled" disabled>不可点击</button>
+                </div>
+            </div>
+            
+            <div class="card aim-assist">
+                <div class="card-header">
+                    <div class="card-icon">🎯</div>
+                    <h2 class="card-title">自瞄脚本</h2>
+                </div>
+                <div class="sub-feature">
+                    <h3 class="sub-feature-title">复制自瞄脚本</h3>
+                    <p class="sub-feature-desc">点击复制自瞄脚本代码到剪贴板</p>
+                    <button class="copy-btn" data-script="aim-assist">复制脚本</button>
+                </div>
+            </div>
+            
+            <div class="card wallhack">
+                <div class="card-header">
+                    <div class="card-icon">👁️</div>
+                    <h2 class="card-title">透视脚本</h2>
+                </div>
+                <div class="sub-feature">
+                    <h3 class="sub-feature-title">正在制作中...</h3>
+                    <p class="sub-feature-desc">此功能正在开发中，敬请期待</p>
+                    <button class="copy-btn disabled" disabled>不可点击</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="notification" id="notification">脚本已复制到剪贴板！</div>
+    
+    <script>
+        // 显示欢迎提示框
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                document.getElementById('welcomeModal').style.display = 'flex';
+            }, 500);
+            
+            // 关闭欢迎提示框
+            document.getElementById('closeModal').addEventListener('click', function() {
+                document.getElementById('welcomeModal').style.animation = 'fadeOut 0.5s forwards';
+                setTimeout(() => {
+                    document.getElementById('welcomeModal').style.display = 'none';
+                }, 500);
+            });
+            
+            // 尝试获取设备信息
+            try {
+                const userAgent = navigator.userAgent;
+                let deviceInfo = "未知设备";
+                
+                if (/Android/i.test(userAgent)) {
+                    deviceInfo = "Android设备";
+                } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+                    deviceInfo = "iOS设备";
+                } else if (/Windows/i.test(userAgent)) {
+                    deviceInfo = "Windows设备";
+                } else if (/Mac/i.test(userAgent)) {
+                    deviceInfo = "Mac设备";
+                } else if (/Linux/i.test(userAgent)) {
+                    deviceInfo = "Linux设备";
+                }
+                
+                document.getElementById('deviceInfo').textContent = deviceInfo;
+            } catch (e) {
+                console.log("无法获取设备信息");
+            }
+            
+            // 复制功能
+            const copyButtons = document.querySelectorAll('.copy-btn:not(.disabled)');
+            const notification = document.getElementById('notification');
+            
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const scriptType = this.getAttribute('data-script');
+                    let textToCopy = '';
+                    
+                    if (scriptType === 'natural-disaster') {
+                        textToCopy = `local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "xb自然灾害脚本"
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Size = UDim2.new(0, 300, 0, 400)
+MainFrame.Position = UDim2.new(0, 50, 0, 50)
+MainFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+MainFrame.BorderSizePixel = 0
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 20)
+UICorner.Parent = MainFrame
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.new(0.5, 0.5, 0.5)
+UIStroke.Thickness = 2
+UIStroke.Parent = MainFrame
+
+local DragHandle = Instance.new("TextButton")
+DragHandle.Name = "DragHandle"
+DragHandle.Size = UDim2.new(1, 0, 0.1, 0)
+DragHandle.Position = UDim2.new(0, 0, 0, 0)
+DragHandle.BackgroundTransparency = 1
+DragHandle.Text = ""
+DragHandle.Parent = MainFrame
+
+local Line = Instance.new("Frame")
+Line.Name = "Line"
+Line.Size = UDim2.new(1, 0, 0, 1)
+Line.Position = UDim2.new(0, 0, 0.1, 0)
+Line.BackgroundColor3 = Color3.new(0.5, 0.5, 0.5)
+Line.BorderSizePixel = 0
+Line.Parent = MainFrame
+
+local AvatarFrame = Instance.new("Frame")
+AvatarFrame.Name = "AvatarFrame"
+AvatarFrame.Size = UDim2.new(0.4, 0, 0.1, 0)
+AvatarFrame.Position = UDim2.new(0, 10, 0, 5)
+AvatarFrame.BackgroundTransparency = 1
+AvatarFrame.Parent = MainFrame
+
+local AvatarImage = Instance.new("ImageLabel")
+AvatarImage.Name = "AvatarImage"
+AvatarImage.Size = UDim2.new(0, 30, 0, 30)
+AvatarImage.Position = UDim2.new(0, 0, 0, 0)
+AvatarImage.BackgroundColor3 = Color3.new(1, 1, 1)
+AvatarImage.BorderSizePixel = 0
+AvatarImage.Parent = AvatarFrame
+
+local UICorner2 = Instance.new("UICorner")
+UICorner2.CornerRadius = UDim.new(1, 0)
+UICorner2.Parent = AvatarImage
+
+local PlayerName = Instance.new("TextLabel")
+PlayerName.Name = "PlayerName"
+PlayerName.Size = UDim2.new(0, 100, 0, 30)
+PlayerName.Position = UDim2.new(0, 35, 0, 0)
+PlayerName.BackgroundTransparency = 1
+PlayerName.Text = Player.Name
+PlayerName.TextColor3 = Color3.new(1, 1, 1)
+PlayerName.TextSize = 14
+PlayerName.TextXAlignment = Enum.TextXAlignment.Left
+PlayerName.Parent = AvatarFrame
+
+local ButtonsFrame = Instance.new("Frame")
+ButtonsFrame.Name = "ButtonsFrame"
+ButtonsFrame.Size = UDim2.new(0.9, 0, 0.7, 0)
+ButtonsFrame.Position = UDim2.new(0.05, 0, 0.2, 0)
+ButtonsFrame.BackgroundTransparency = 1
+ButtonsFrame.Parent = MainFrame
+
+local FlyButton = Instance.new("TextButton")
+FlyButton.Name = "FlyButton"
+FlyButton.Size = UDim2.new(1, 0, 0, 40)
+FlyButton.Position = UDim2.new(0, 0, 0, 0)
+FlyButton.BackgroundColor3 = Color3.new(1, 1, 1)
+FlyButton.TextColor3 = Color3.new(0, 0, 0)
+FlyButton.Text = "飞行"
+FlyButton.TextSize = 14
+FlyButton.Parent = ButtonsFrame
+
+local UICorner3 = Instance.new("UICorner")
+UICorner3.CornerRadius = UDim.new(0, 5)
+UICorner3.Parent = FlyButton
+
+local NoclipButton = Instance.new("TextButton")
+NoclipButton.Name = "NoclipButton"
+NoclipButton.Size = UDim2.new(1, 0, 0, 40)
+NoclipButton.Position = UDim2.new(0, 0, 0, 50)
+NoclipButton.BackgroundColor3 = Color3.new(1, 1, 1)
+NoclipButton.TextColor3 = Color3.new(0, 0, 0)
+NoclipButton.Text = "穿墙"
+NoclipButton.TextSize = 14
+NoclipButton.Parent = ButtonsFrame
+
+local UICorner4 = Instance.new("UICorner")
+UICorner4.CornerRadius = UDim.new(0, 5)
+UICorner4.Parent = NoclipButton
+
+local AttractButton = Instance.new("TextButton")
+AttractButton.Name = "AttractButton"
+AttractButton.Size = UDim2.new(1, 0, 0, 40)
+AttractButton.Position = UDim2.new(0, 0, 0, 100)
+AttractButton.BackgroundColor3 = Color3.new(1, 1, 1)
+AttractButton.TextColor3 = Color3.new(0, 0, 0)
+AttractButton.Text = "吸引方块"
+AttractButton.TextSize = 14
+AttractButton.Parent = ButtonsFrame
+
+local UICorner5 = Instance.new("UICorner")
+UICorner5.CornerRadius = UDim.new(0, 5)
+UICorner5.Parent = AttractButton
+
+local FlySpeedFrame = Instance.new("Frame")
+FlySpeedFrame.Name = "FlySpeedFrame"
+FlySpeedFrame.Size = UDim2.new(1, 0, 0, 60)
+FlySpeedFrame.Position = UDim2.new(0, 0, 0, 160)
+FlySpeedFrame.BackgroundTransparency = 1
+FlySpeedFrame.Visible = false
+FlySpeedFrame.Parent = ButtonsFrame
+
+local FlySpeedLabel = Instance.new("TextLabel")
+FlySpeedLabel.Name = "FlySpeedLabel"
+FlySpeedLabel.Size = UDim2.new(1, 0, 0, 20)
+FlySpeedLabel.Position = UDim2.new(0, 0, 0, 0)
+FlySpeedLabel.BackgroundTransparency = 1
+FlySpeedLabel.Text = "飞行速度: 50"
+FlySpeedLabel.TextColor3 = Color3.new(1, 1, 1)
+FlySpeedLabel.TextSize = 12
+FlySpeedLabel.Parent = FlySpeedFrame
+
+local FlySpeedSlider = Instance.new("TextButton")
+FlySpeedSlider.Name = "FlySpeedSlider"
+FlySpeedSlider.Size = UDim2.new(1, 0, 0, 30)
+FlySpeedSlider.Position = UDim2.new(0, 0, 0, 25)
+FlySpeedSlider.BackgroundColor3 = Color3.new(0.3, 0.3, 0.3)
+FlySpeedSlider.Text = ""
+FlySpeedSlider.Parent = FlySpeedFrame
+
+local UICorner6 = Instance.new("UICorner")
+UICorner6.CornerRadius = UDim.new(0, 5)
+UICorner6.Parent = FlySpeedSlider
+
+local FlySpeedFill = Instance.new("Frame")
+FlySpeedFill.Name = "FlySpeedFill"
+FlySpeedFill.Size = UDim2.new(0.5, 0, 1, 0)
+FlySpeedFill.Position = UDim2.new(0, 0, 0, 0)
+FlySpeedFill.BackgroundColor3 = Color3.new(0, 0.5, 1)
+FlySpeedFill.BorderSizePixel = 0
+FlySpeedFill.Parent = FlySpeedSlider
+
+local UICorner7 = Instance.new("UICorner")
+UICorner7.CornerRadius = UDim.new(0, 5)
+UICorner7.Parent = FlySpeedFill
+
+local MinimizeButton = Instance.new("TextButton")
+MinimizeButton.Name = "MinimizeButton"
+MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
+MinimizeButton.Position = UDim2.new(1, -35, 0, 5)
+MinimizeButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+MinimizeButton.TextColor3 = Color3.new(1, 1, 1)
+MinimizeButton.Text = "-"
+MinimizeButton.TextSize = 16
+MinimizeButton.Parent = MainFrame
+
+local UICorner8 = Instance.new("UICorner")
+UICorner8.CornerRadius = UDim.new(1, 0)
+UICorner8.Parent = MinimizeButton
+
+local MinimizedFrame = Instance.new("Frame")
+MinimizedFrame.Name = "MinimizedFrame"
+MinimizedFrame.Size = UDim2.new(0, 60, 0, 40)
+MinimizedFrame.Position = UDim2.new(0, 50, 0, 50)
+MinimizedFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+MinimizedFrame.BorderSizePixel = 0
+MinimizedFrame.Visible = false
+
+local UICorner9 = Instance.new("UICorner")
+UICorner9.CornerRadius = UDim.new(1, 0)
+UICorner9.Parent = MinimizedFrame
+
+local UIStroke2 = Instance.new("UIStroke")
+UIStroke2.Color = Color3.new(0.5, 0.5, 0.5)
+UIStroke2.Thickness = 2
+UIStroke2.Parent = MinimizedFrame
+
+local MaximizeButton = Instance.new("TextButton")
+MaximizeButton.Name = "MaximizeButton"
+MaximizeButton.Size = UDim2.new(0, 30, 0, 30)
+MaximizeButton.Position = UDim2.new(0, 15, 0, 5)
+MaximizeButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+MaximizeButton.TextColor3 = Color3.new(1, 1, 1)
+MaximizeButton.Text = "+"
+MaximizeButton.TextSize = 16
+MaximizeButton.Parent = MinimizedFrame
+
+local UICorner10 = Instance.new("UICorner")
+UICorner10.CornerRadius = UDim.new(1, 0)
+UICorner10.Parent = MaximizeButton
+
+ScreenGui.Parent = PlayerGui
+MainFrame.Parent = ScreenGui
+MinimizedFrame.Parent = ScreenGui
+
+local dragging = false
+local dragInput, dragStart, startPos
+
+local function update(input)
+    local delta = input.Position - dragStart
+    MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+
+DragHandle.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = MainFrame.Position
+        
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+DragHandle.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        update(input)
+    end
+end)
+
+local isMinimized = false
+local tweenService = game:GetService("TweenService")
+
+MinimizeButton.MouseButton1Click:Connect(function()
+    isMinimized = true
+    local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    local tween = tweenService:Create(MainFrame, tweenInfo, {Size = UDim2.new(0, 0, 0, 0)})
+    tween:Play()
+    tween.Completed:Connect(function()
+        MainFrame.Visible = false
+        MinimizedFrame.Visible = true
+        MinimizedFrame.Position = MainFrame.Position
+    end)
+end)
+
+MaximizeButton.MouseButton1Click:Connect(function()
+    isMinimized = false
+    MinimizedFrame.Visible = false
+    MainFrame.Visible = true
+    local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    local tween = tweenService:Create(MainFrame, tweenInfo, {Size = UDim2.new(0, 300, 0, 400)})
+    tween:Play()
+end)
+
+local flyEnabled = false
+local flySpeed = 50
+local noclipEnabled = false
+local attractEnabled = false
+
+local function updateFlySpeed()
+    FlySpeedLabel.Text = "飞行速度: " .. flySpeed
+    FlySpeedFill.Size = UDim2.new(flySpeed / 100, 0, 1, 0)
+end
+
+FlyButton.MouseButton1Click:Connect(function()
+    flyEnabled = not flyEnabled
+    FlySpeedFrame.Visible = flyEnabled
+    if flyEnabled then
+        FlyButton.BackgroundColor3 = Color3.new(0, 1, 0)
+    else
+        FlyButton.BackgroundColor3 = Color3.new(1, 1, 1)
+    end
+end)
+
+FlySpeedSlider.MouseButton1Down:Connect(function()
+    local connection
+    connection = game:GetService("UserInputService").InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.Touch then
+            local xPos = input.Position.X - FlySpeedSlider.AbsolutePosition.X
+            local percentage = math.clamp(xPos / FlySpeedSlider.AbsoluteSize.X, 0, 1)
+            flySpeed = math.floor(percentage * 100)
+            updateFlySpeed()
+        end
+    end)
+    
+    game:GetService("UserInputService").InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.Touch then
+            connection:Disconnect()
+        end
+    end)
+end)
+
+NoclipButton.MouseButton1Click:Connect(function()
+    noclipEnabled = not noclipEnabled
+    if noclipEnabled then
+        NoclipButton.BackgroundColor3 = Color3.new(0, 1, 0)
+    else
+        NoclipButton.BackgroundColor3 = Color3.new(1, 1, 1)
+    end
+end)
+
+AttractButton.MouseButton1Click:Connect(function()
+    attractEnabled = not attractEnabled
+    if attractEnabled then
+        AttractButton.BackgroundColor3 = Color3.new(0, 1, 0)
+    else
+        AttractButton.BackgroundColor3 = Color3.new(1, 1, 1)
+    end
+end)
+
+updateFlySpeed()
+
+local function getPlayerAvatar()
+    local userId = Player.UserId
+    local thumbType = Enum.ThumbnailType.HeadShot
+    local thumbSize = Enum.ThumbnailSize.Size420x420
+    local content, isReady = Players:GetUserThumbnailAsync(userId, thumbType, thumbSize)
+    return content
+end
+
+AvatarImage.Image = getPlayerAvatar()`;
+                    } else if (scriptType === 'aim-assist') {
+                        textToCopy = `local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+local mouse = player:GetMouse()
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "TargetingSystem"
+screenGui.Parent = player.PlayerGui
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 100, 0, 100)
+frame.Position = UDim2.new(0.5, -50, 0.5, -50)
+frame.BackgroundTransparency = 1
+frame.Parent = screenGui
+
+local circle = Instance.new("ImageLabel")
+circle.Size = UDim2.new(1, 0, 1, 0)
+circle.BackgroundTransparency = 1
+circle.Image = "rbxassetid://3570695787"
+circle.ImageColor3 = Color3.new(0, 1, 0)
+circle.ScaleType = Enum.ScaleType.Slice
+circle.SliceScale = 0.5
+circle.Parent = frame
+
+local dot = Instance.new("Frame")
+dot.Size = UDim2.new(0, 4, 0, 4)
+dot.Position = UDim2.new(0.5, -2, 0.5, -2)
+dot.BackgroundColor3 = Color3.new(0, 1, 0)
+dot.BorderSizePixel = 0
+dot.Parent = frame
+
+local lineFrame = Instance.new("Frame")
+lineFrame.Size = UDim2.new(1, 0, 1, 0)
+lineFrame.BackgroundTransparency = 1
+lineFrame.Parent = frame
+
+local connection
+connection = RunService.RenderStepped:Connect(function()
+    for _, child in ipairs(lineFrame:GetChildren()) do
+        child:Destroy()
+    end
+    
+    local line = Instance.new("Frame")
+    line.BackgroundColor3 = Color3.new(0, 1, 0)
+    line.BorderSizePixel = 0
+    line.Parent = lineFrame
+    
+    local center = Vector2.new(frame.AbsolutePosition.X + frame.AbsoluteSize.X/2, 
+                              frame.AbsolutePosition.Y + frame.AbsoluteSize.Y/2)
+    
+    local character = player.Character
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        local rootPart = character.HumanoidRootPart
+        local screenPoint, visible = workspace.CurrentCamera:WorldToScreenPoint(rootPart.Position)
+        
+        if visible then
+            local targetPos = Vector2.new(screenPoint.X, screenPoint.Y)
+            
+            local direction = (targetPos - center)
+            local distance = direction.Magnitude
+            local angle = math.atan2(direction.Y, direction.X)
+            
+            line.Size = UDim2.new(0, distance, 0, 2)
+            line.Position = UDim2.new(0, 0, 0, 0)
+            line.Rotation = math.deg(angle)
+            line.AnchorPoint = Vector2.new(0, 0.5)
+            line.Position = UDim2.new(0, frame.AbsoluteSize.X/2, 0, frame.AbsoluteSize.Y/2)
+        end
+    end
+end)
+
+player.CharacterAdded:Connect(function()
+    if connection then
+        connection:Disconnect()
+    end
+end)`;
+                    }
+                    
+                    // 复制到剪贴板
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        // 显示通知
+                        notification.classList.add('show');
+                        setTimeout(() => {
+                            notification.classList.remove('show');
+                        }, 3000);
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
