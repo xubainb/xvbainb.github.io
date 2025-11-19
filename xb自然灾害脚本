@@ -1,0 +1,335 @@
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "xb自然灾害脚本"
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Size = UDim2.new(0, 300, 0, 400)
+MainFrame.Position = UDim2.new(0, 50, 0, 50)
+MainFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+MainFrame.BorderSizePixel = 0
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 20)
+UICorner.Parent = MainFrame
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.new(0.5, 0.5, 0.5)
+UIStroke.Thickness = 2
+UIStroke.Parent = MainFrame
+
+local DragHandle = Instance.new("TextButton")
+DragHandle.Name = "DragHandle"
+DragHandle.Size = UDim2.new(1, 0, 0.1, 0)
+DragHandle.Position = UDim2.new(0, 0, 0, 0)
+DragHandle.BackgroundTransparency = 1
+DragHandle.Text = ""
+DragHandle.Parent = MainFrame
+
+local Line = Instance.new("Frame")
+Line.Name = "Line"
+Line.Size = UDim2.new(1, 0, 0, 1)
+Line.Position = UDim2.new(0, 0, 0.1, 0)
+Line.BackgroundColor3 = Color3.new(0.5, 0.5, 0.5)
+Line.BorderSizePixel = 0
+Line.Parent = MainFrame
+
+local AvatarFrame = Instance.new("Frame")
+AvatarFrame.Name = "AvatarFrame"
+AvatarFrame.Size = UDim2.new(0.4, 0, 0.1, 0)
+AvatarFrame.Position = UDim2.new(0, 10, 0, 5)
+AvatarFrame.BackgroundTransparency = 1
+AvatarFrame.Parent = MainFrame
+
+local AvatarImage = Instance.new("ImageLabel")
+AvatarImage.Name = "AvatarImage"
+AvatarImage.Size = UDim2.new(0, 30, 0, 30)
+AvatarImage.Position = UDim2.new(0, 0, 0, 0)
+AvatarImage.BackgroundColor3 = Color3.new(1, 1, 1)
+AvatarImage.BorderSizePixel = 0
+AvatarImage.Parent = AvatarFrame
+
+local UICorner2 = Instance.new("UICorner")
+UICorner2.CornerRadius = UDim.new(1, 0)
+UICorner2.Parent = AvatarImage
+
+local PlayerName = Instance.new("TextLabel")
+PlayerName.Name = "PlayerName"
+PlayerName.Size = UDim2.new(0, 100, 0, 30)
+PlayerName.Position = UDim2.new(0, 35, 0, 0)
+PlayerName.BackgroundTransparency = 1
+PlayerName.Text = Player.Name
+PlayerName.TextColor3 = Color3.new(1, 1, 1)
+PlayerName.TextSize = 14
+PlayerName.TextXAlignment = Enum.TextXAlignment.Left
+PlayerName.Parent = AvatarFrame
+
+local ButtonsFrame = Instance.new("Frame")
+ButtonsFrame.Name = "ButtonsFrame"
+ButtonsFrame.Size = UDim2.new(0.9, 0, 0.7, 0)
+ButtonsFrame.Position = UDim2.new(0.05, 0, 0.2, 0)
+ButtonsFrame.BackgroundTransparency = 1
+ButtonsFrame.Parent = MainFrame
+
+local FlyButton = Instance.new("TextButton")
+FlyButton.Name = "FlyButton"
+FlyButton.Size = UDim2.new(1, 0, 0, 40)
+FlyButton.Position = UDim2.new(0, 0, 0, 0)
+FlyButton.BackgroundColor3 = Color3.new(1, 1, 1)
+FlyButton.TextColor3 = Color3.new(0, 0, 0)
+FlyButton.Text = "飞行"
+FlyButton.TextSize = 14
+FlyButton.Parent = ButtonsFrame
+
+local UICorner3 = Instance.new("UICorner")
+UICorner3.CornerRadius = UDim.new(0, 5)
+UICorner3.Parent = FlyButton
+
+local NoclipButton = Instance.new("TextButton")
+NoclipButton.Name = "NoclipButton"
+NoclipButton.Size = UDim2.new(1, 0, 0, 40)
+NoclipButton.Position = UDim2.new(0, 0, 0, 50)
+NoclipButton.BackgroundColor3 = Color3.new(1, 1, 1)
+NoclipButton.TextColor3 = Color3.new(0, 0, 0)
+NoclipButton.Text = "穿墙"
+NoclipButton.TextSize = 14
+NoclipButton.Parent = ButtonsFrame
+
+local UICorner4 = Instance.new("UICorner")
+UICorner4.CornerRadius = UDim.new(0, 5)
+UICorner4.Parent = NoclipButton
+
+local AttractButton = Instance.new("TextButton")
+AttractButton.Name = "AttractButton"
+AttractButton.Size = UDim2.new(1, 0, 0, 40)
+AttractButton.Position = UDim2.new(0, 0, 0, 100)
+AttractButton.BackgroundColor3 = Color3.new(1, 1, 1)
+AttractButton.TextColor3 = Color3.new(0, 0, 0)
+AttractButton.Text = "吸引方块"
+AttractButton.TextSize = 14
+AttractButton.Parent = ButtonsFrame
+
+local UICorner5 = Instance.new("UICorner")
+UICorner5.CornerRadius = UDim.new(0, 5)
+UICorner5.Parent = AttractButton
+
+local FlySpeedFrame = Instance.new("Frame")
+FlySpeedFrame.Name = "FlySpeedFrame"
+FlySpeedFrame.Size = UDim2.new(1, 0, 0, 60)
+FlySpeedFrame.Position = UDim2.new(0, 0, 0, 160)
+FlySpeedFrame.BackgroundTransparency = 1
+FlySpeedFrame.Visible = false
+FlySpeedFrame.Parent = ButtonsFrame
+
+local FlySpeedLabel = Instance.new("TextLabel")
+FlySpeedLabel.Name = "FlySpeedLabel"
+FlySpeedLabel.Size = UDim2.new(1, 0, 0, 20)
+FlySpeedLabel.Position = UDim2.new(0, 0, 0, 0)
+FlySpeedLabel.BackgroundTransparency = 1
+FlySpeedLabel.Text = "飞行速度: 50"
+FlySpeedLabel.TextColor3 = Color3.new(1, 1, 1)
+FlySpeedLabel.TextSize = 12
+FlySpeedLabel.Parent = FlySpeedFrame
+
+local FlySpeedSlider = Instance.new("TextButton")
+FlySpeedSlider.Name = "FlySpeedSlider"
+FlySpeedSlider.Size = UDim2.new(1, 0, 0, 30)
+FlySpeedSlider.Position = UDim2.new(0, 0, 0, 25)
+FlySpeedSlider.BackgroundColor3 = Color3.new(0.3, 0.3, 0.3)
+FlySpeedSlider.Text = ""
+FlySpeedSlider.Parent = FlySpeedFrame
+
+local UICorner6 = Instance.new("UICorner")
+UICorner6.CornerRadius = UDim.new(0, 5)
+UICorner6.Parent = FlySpeedSlider
+
+local FlySpeedFill = Instance.new("Frame")
+FlySpeedFill.Name = "FlySpeedFill"
+FlySpeedFill.Size = UDim2.new(0.5, 0, 1, 0)
+FlySpeedFill.Position = UDim2.new(0, 0, 0, 0)
+FlySpeedFill.BackgroundColor3 = Color3.new(0, 0.5, 1)
+FlySpeedFill.BorderSizePixel = 0
+FlySpeedFill.Parent = FlySpeedSlider
+
+local UICorner7 = Instance.new("UICorner")
+UICorner7.CornerRadius = UDim.new(0, 5)
+UICorner7.Parent = FlySpeedFill
+
+local MinimizeButton = Instance.new("TextButton")
+MinimizeButton.Name = "MinimizeButton"
+MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
+MinimizeButton.Position = UDim2.new(1, -35, 0, 5)
+MinimizeButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+MinimizeButton.TextColor3 = Color3.new(1, 1, 1)
+MinimizeButton.Text = "-"
+MinimizeButton.TextSize = 16
+MinimizeButton.Parent = MainFrame
+
+local UICorner8 = Instance.new("UICorner")
+UICorner8.CornerRadius = UDim.new(1, 0)
+UICorner8.Parent = MinimizeButton
+
+local MinimizedFrame = Instance.new("Frame")
+MinimizedFrame.Name = "MinimizedFrame"
+MinimizedFrame.Size = UDim2.new(0, 60, 0, 40)
+MinimizedFrame.Position = UDim2.new(0, 50, 0, 50)
+MinimizedFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+MinimizedFrame.BorderSizePixel = 0
+MinimizedFrame.Visible = false
+
+local UICorner9 = Instance.new("UICorner")
+UICorner9.CornerRadius = UDim.new(1, 0)
+UICorner9.Parent = MinimizedFrame
+
+local UIStroke2 = Instance.new("UIStroke")
+UIStroke2.Color = Color3.new(0.5, 0.5, 0.5)
+UIStroke2.Thickness = 2
+UIStroke2.Parent = MinimizedFrame
+
+local MaximizeButton = Instance.new("TextButton")
+MaximizeButton.Name = "MaximizeButton"
+MaximizeButton.Size = UDim2.new(0, 30, 0, 30)
+MaximizeButton.Position = UDim2.new(0, 15, 0, 5)
+MaximizeButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+MaximizeButton.TextColor3 = Color3.new(1, 1, 1)
+MaximizeButton.Text = "+"
+MaximizeButton.TextSize = 16
+MaximizeButton.Parent = MinimizedFrame
+
+local UICorner10 = Instance.new("UICorner")
+UICorner10.CornerRadius = UDim.new(1, 0)
+UICorner10.Parent = MaximizeButton
+
+ScreenGui.Parent = PlayerGui
+MainFrame.Parent = ScreenGui
+MinimizedFrame.Parent = ScreenGui
+
+local dragging = false
+local dragInput, dragStart, startPos
+
+local function update(input)
+    local delta = input.Position - dragStart
+    MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+
+DragHandle.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = MainFrame.Position
+        
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+DragHandle.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        update(input)
+    end
+end)
+
+local isMinimized = false
+local tweenService = game:GetService("TweenService")
+
+MinimizeButton.MouseButton1Click:Connect(function()
+    isMinimized = true
+    local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    local tween = tweenService:Create(MainFrame, tweenInfo, {Size = UDim2.new(0, 0, 0, 0)})
+    tween:Play()
+    tween.Completed:Connect(function()
+        MainFrame.Visible = false
+        MinimizedFrame.Visible = true
+        MinimizedFrame.Position = MainFrame.Position
+    end)
+end)
+
+MaximizeButton.MouseButton1Click:Connect(function()
+    isMinimized = false
+    MinimizedFrame.Visible = false
+    MainFrame.Visible = true
+    local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    local tween = tweenService:Create(MainFrame, tweenInfo, {Size = UDim2.new(0, 300, 0, 400)})
+    tween:Play()
+end)
+
+local flyEnabled = false
+local flySpeed = 50
+local noclipEnabled = false
+local attractEnabled = false
+
+local function updateFlySpeed()
+    FlySpeedLabel.Text = "飞行速度: " .. flySpeed
+    FlySpeedFill.Size = UDim2.new(flySpeed / 100, 0, 1, 0)
+end
+
+FlyButton.MouseButton1Click:Connect(function()
+    flyEnabled = not flyEnabled
+    FlySpeedFrame.Visible = flyEnabled
+    if flyEnabled then
+        FlyButton.BackgroundColor3 = Color3.new(0, 1, 0)
+    else
+        FlyButton.BackgroundColor3 = Color3.new(1, 1, 1)
+    end
+end)
+
+FlySpeedSlider.MouseButton1Down:Connect(function()
+    local connection
+    connection = game:GetService("UserInputService").InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.Touch then
+            local xPos = input.Position.X - FlySpeedSlider.AbsolutePosition.X
+            local percentage = math.clamp(xPos / FlySpeedSlider.AbsoluteSize.X, 0, 1)
+            flySpeed = math.floor(percentage * 100)
+            updateFlySpeed()
+        end
+    end)
+    
+    game:GetService("UserInputService").InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.Touch then
+            connection:Disconnect()
+        end
+    end)
+end)
+
+NoclipButton.MouseButton1Click:Connect(function()
+    noclipEnabled = not noclipEnabled
+    if noclipEnabled then
+        NoclipButton.BackgroundColor3 = Color3.new(0, 1, 0)
+    else
+        NoclipButton.BackgroundColor3 = Color3.new(1, 1, 1)
+    end
+end)
+
+AttractButton.MouseButton1Click:Connect(function()
+    attractEnabled = not attractEnabled
+    if attractEnabled then
+        AttractButton.BackgroundColor3 = Color3.new(0, 1, 0)
+    else
+        AttractButton.BackgroundColor3 = Color3.new(1, 1, 1)
+    end
+end)
+
+updateFlySpeed()
+
+local function getPlayerAvatar()
+    local userId = Player.UserId
+    local thumbType = Enum.ThumbnailType.HeadShot
+    local thumbSize = Enum.ThumbnailSize.Size420x420
+    local content, isReady = Players:GetUserThumbnailAsync(userId, thumbType, thumbSize)
+    return content
+end
+
+AvatarImage.Image = getPlayerAvatar()
