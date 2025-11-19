@@ -1,0 +1,78 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+local mouse = player:GetMouse()
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "TargetingSystem"
+screenGui.Parent = player.PlayerGui
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 100, 0, 100)
+frame.Position = UDim2.new(0.5, -50, 0.5, -50)
+frame.BackgroundTransparency = 1
+frame.Parent = screenGui
+
+local circle = Instance.new("ImageLabel")
+circle.Size = UDim2.new(1, 0, 1, 0)
+circle.BackgroundTransparency = 1
+circle.Image = "rbxassetid://3570695787"
+circle.ImageColor3 = Color3.new(0, 1, 0)
+circle.ScaleType = Enum.ScaleType.Slice
+circle.SliceScale = 0.5
+circle.Parent = frame
+
+local dot = Instance.new("Frame")
+dot.Size = UDim2.new(0, 4, 0, 4)
+dot.Position = UDim2.new(0.5, -2, 0.5, -2)
+dot.BackgroundColor3 = Color3.new(0, 1, 0)
+dot.BorderSizePixel = 0
+dot.Parent = frame
+
+local lineFrame = Instance.new("Frame")
+lineFrame.Size = UDim2.new(1, 0, 1, 0)
+lineFrame.BackgroundTransparency = 1
+lineFrame.Parent = frame
+
+local connection
+connection = RunService.RenderStepped:Connect(function()
+    for _, child in ipairs(lineFrame:GetChildren()) do
+        child:Destroy()
+    end
+    
+    local line = Instance.new("Frame")
+    line.BackgroundColor3 = Color3.new(0, 1, 0)
+    line.BorderSizePixel = 0
+    line.Parent = lineFrame
+    
+    local center = Vector2.new(frame.AbsolutePosition.X + frame.AbsoluteSize.X/2, 
+                              frame.AbsolutePosition.Y + frame.AbsoluteSize.Y/2)
+    
+    local character = player.Character
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        local rootPart = character.HumanoidRootPart
+        local screenPoint, visible = workspace.CurrentCamera:WorldToScreenPoint(rootPart.Position)
+        
+        if visible then
+            local targetPos = Vector2.new(screenPoint.X, screenPoint.Y)
+            
+            local direction = (targetPos - center)
+            local distance = direction.Magnitude
+            local angle = math.atan2(direction.Y, direction.X)
+            
+            line.Size = UDim2.new(0, distance, 0, 2)
+            line.Position = UDim2.new(0, 0, 0, 0)
+            line.Rotation = math.deg(angle)
+            line.AnchorPoint = Vector2.new(0, 0.5)
+            line.Position = UDim2.new(0, frame.AbsoluteSize.X/2, 0, frame.AbsoluteSize.Y/2)
+        end
+    end
+end)
+
+player.CharacterAdded:Connect(function()
+    if connection then
+        connection:Disconnect()
+    end
+end)
