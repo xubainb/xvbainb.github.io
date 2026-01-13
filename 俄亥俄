@@ -1,0 +1,200 @@
+local soundId = "rbxassetid://88457346646245" -- 请确认此音效内容完全合规
+local Workspace = game:GetService("Workspace")
+
+-- 创建音效对象
+local sound = Instance.new("Sound")
+sound.SoundId = soundId
+sound.Looped = false -- 仅播放一次
+sound.Volume = 0.5
+sound.Parent = Workspace
+
+-- 播放音效
+sound:Play()
+
+-- 音效结束后立即销毁，释放资源（优化内存占用）
+sound.Ended:Connect(function()
+    sound:Destroy()
+    warn("音效已播放完毕并销毁") -- 可选：控制台提示，便于调试
+end)
+
+-- 可选：防止音效加载失败时占用资源
+task.delay(10, function() -- 10秒后若未播放，自动销毁
+    if sound and sound.Parent and not sound.IsPlaying then
+        sound:Destroy()
+        warn("音效加载超时/未播放，已自动销毁")
+    end
+小迪:CreateTopbarButton《you you》，《you you》=function（）)
+
+其他的返回
+结束"https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+名称 =)
+
+口音=Dialog= 大纲=文本=)占位符=背景=按钮= 图标 =当地的playerName=LocalPlayer。Name当地的 displayName=LocalPlayer. displayName UserInputService -- 安全的通知函数"当地的 UserInputService.KeyboardEnabled 函数安全保护（周、周）"Position = uiPosition,"
+    warn(] = { Color = Color3.fromHex()
+结束然后 safeNotify HideSearchBar=false，you=true3）uiSize=UDim2
+主题=
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local TextService = game:GetService("TextService")
+
+local LocalPlayer = Players.LocalPlayer
+if not LocalPlayer then
+    LocalPlayer = Players:GetPropertyChangedSignal("LocalPlayer"):Wait()
+end
+
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+local camera = workspace.CurrentCamera
+local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+
+local Speed = 1
+local sudu = nil
+local tpwalkingspeed = false
+local spinVelocity = nil
+local autoInteract = false
+local autoInteractThread = nil
+local InfJ = false
+local InfJConnection = nil
+local fastInteractConnection = nil
+
+-- 俄亥俄功能变量
+local Csh = false
+local MB = false
+local NameSet = false
+local DistanceSet = false
+local HealthSet = false
+local H_Money = false
+local H_ATM = false
+local flags = {
+    KillAura = false,
+    Aura = false
+}
+local Speedtb = 0
+local Toggletb = false
+local HipHeightValue = 1.5
+local HipHeightEnabled = false
+local CP = nil
+local PL = {}
+
+-- 安全执行函数
+local function safeCall(callback, ...)
+    local args = {...}
+    return pcall(function()
+        return callback(unpack(args))
+    end)
+end
+
+-- 初始化玩家列表
+for _, player in pairs(Players:GetPlayers()) do
+    if not table.find(PL, player.Name) ），透明度=
+] = { Color = Color3.fromHex(
+），透明度=]={Color=Color3. fromHex（返回其他的当地的
+uiPosition = UDim2.new(uiSize = UDim2.fromOffset(
+
+Players.PlayerAdded:Connect(function(player)
+），透明度=
+[“50”"主作者:you to you to"""#2c3 e50"Folder=0}，[“0”图标="#1a1a1 a"you=0}，
+结束然后"#000000",deviceType ==
+然后)
+
+Players.PlayerRemoving:Connect(function(player)
+    uiSize = UDim2.fromOffset(否则如果
+然后
+透明=真实，
+safeNotify HideSearchBar=false，用户={you=true3）
+“平板”
+
+mayoto=，“theme-switcher”，“moon”yoblusblusblusblus=playerName，DisplayName=DisplayName，UserId=LocalPlayer
+匿名=假，
+用户名=playerName，DisplayName=DisplayName，UserId=LocalPlayer
+小迪:CreateTopbarButton《you you》，《you you》=function（）150 }),
+结束 SideBarWidth=deviceType==
+迪脚本通知
+[迪脚本诉 2]
+迪脚本通知
+[V 2是新做的，999万
+结束然后
+uiPosition = UDim2.new(uiSize = UDim2.fromOffset(
+
+uiSize = UDim2.fromOffset(.. LocalPlayer.Name,
+TransparencyValue=其他的
+
+[“50”"主作者:you to you to"""#2c3 e50"Folder=0}，
+"电脑"
+结束
+"电脑"
+名称 =
+口音=Dialog=
+大纲=文本=)
+占位符=背景=按钮= 图标 =当地的
+
+playerName=LocalPlayer. Name当地的 displayName=LocalPlayer. displayName UserInputService
+
+WindUI:AddTheme({
+-- 初始化玩家列表"手机"",
+用户名=playerName，DisplayName=DisplayName，UserId=localmayoto否则如果然后 mayoto=返回 loadstring you:HttpGetdeviceType ==Size = uiSize,[“fastInteractConnection = nil
+mayoto=，“theme-switcher”，“moon”yoblusblusblusblus=playerName，DisplayName=DisplayName，UserId=LocalPlayer匿名=假，[“），透明度=
+小迪:CreateTopbarButton《you you》，《you you》=function（）150}，结束 SideBarWidth=deviceType==用户名=playerName，DisplayName=DisplayName，UserId=LocalPlayer迪脚本通知"[迪脚本 v 2 you]，
+[迪脚本诉 2]
+迪脚本通知
+"[V]2[V 2是新做的，999]150 mayoto=180safeNotify HideSearchBar=false，用户={you=true3）uiSize=UDim2。fromOffset（600"手机"2
+头衔=头衔，
+“平板”
+迪脚本通知#
+
+"#1如果"[无法加载 WindUI you you]
+
+"#1如果"返回结束 SideBarWidth=deviceType==displayName=LocalPlayer. displayName
+"uiPosition = UDim2.new(uiSize = UDim2.fromOffset("
+
+-- 安全的通知函数
+local function safeNotify(title, content, duration)
+    safeCall(function()
+        WindUI:Notify({
+            Title = title,
+            Content = content,
+            Duration = duration or 2
+        })
+    end)
+end
+
+safeNotify("迪脚本通知", "迪脚本v2加载完成", 2)
+safeNotify("迪脚本通知", "V2是新做的，后面会增加服务器功能和自制功能", 2)
+
+local XiaoDi = WindUI:CreateWindow({
+    Title = 结束,
+结束"rbxassetid://124019880670946",
+"迪脚本通知"[迪脚本 v2我喜欢”,
+"迪脚本通知"“V”2是新做的，我看你的”,
+当地的
+XiaoDi = WindUI:CreateWindow({
+标题="CyberBlue",
+[迪脚本 v 2*]
+        ["0"图标 ="#1a1a1a"作者=0 },
+速度=
+当地的sudu = nil当地的
+tpwalkingspeed = falseReplicatedStorage = game:GetService(
+当地的
+spinVelocity = nil
+当地的
+autoInteract = false
+当地的
+autoInteractThread = nil
+当地的
+InfJ = false
+-- 初始化玩家列表
+"电脑"
+"电脑"
+for _, player in pairs(Players:GetPlayers())
+    },
+做
+如果
+不
+指数
+然后 table.find（PL，player.Name）
+
+头衔=头衔，
+内容=内容，
+持续时间=
